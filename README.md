@@ -40,7 +40,7 @@ To run the pdns logger, execute the following command without arguments.
 2020-05-29 18:39:08,580 Using selector: EpollSelector
 ```
 
-In this mode, the logger is listening by default on the 0.0.0.0 interface and 50000 tcp port and 
+In this mode, the logger is listening by default on the 0.0.0.0 interface and 50001 tcp port and 
 DNS queries and responses are also printed directly on stdout in JSON format.
 
 If you want to send your DNS logs to a remote JSON collector, start the pdns logger as below.
@@ -116,7 +116,7 @@ systemctl enable dnstap_receiver
 vim /etc/dnsdist/dnsdist.conf
 
 ```
-rl = newRemoteLogger("10.0.0.97:50000")
+rl = newRemoteLogger("10.0.0.97:50001")
 addAction(AllRule(),RemoteLogAction(rl))
 addResponseAction(AllRule(),RemoteLogResponseAction(rl))
 ```
@@ -132,8 +132,8 @@ lua-config-file=/etc/pdns-recursor/recursor.lua
 vim /etc/pdns-recursor/recursor.lua
 
 ```
-protobufServer("10.0.0.97:50000", {logQueries=true, logResponses=true, exportTypes={'A', 'AAAA', 'CNAME', 'MX', 'PTR', 'NS', 'SPF', 'SRV', 'TXT'}} )
-outgoingProtobufServer("10.0.0.97:50000",  {logQueries=true, logResponses=true, exportTypes={'A', 'AAAA', 'CNAME', 'MX', 'PTR', 'NS', 'SPF', 'SRV', 'TXT'}})
+protobufServer("10.0.0.97:50001", {logQueries=true, logResponses=true, exportTypes={'A', 'AAAA', 'CNAME', 'MX', 'PTR', 'NS', 'SPF', 'SRV', 'TXT'}} )
+outgoingProtobufServer("10.0.0.97:50001",  {logQueries=true, logResponses=true, exportTypes={'A', 'AAAA', 'CNAME', 'MX', 'PTR', 'NS', 'SPF', 'SRV', 'TXT'}})
 ```
 
 ### collect logs and send-it to ELK
@@ -143,7 +143,7 @@ vim /etc/logstash/conf.d/pdns-logger.conf
 ```
 input {
   tcp {
-      port => 50000
+      port => 6000
       codec => json
   }
 }

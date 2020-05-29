@@ -154,12 +154,12 @@ def start_receiver():
 
     if args.j is None:
         debug_mode = True
-        host = None
-        port = None
+        remote_host = None
+        remote_port = None
     else:
         debug_mode = False
         try:
-            host, port = args.j.split(":")
+            remote_host, remote_port = args.j.split(":")
         except Exception as e:
             logging.error("bad remote ip:port provided -%s" % args.j)
             sys.exit(1)
@@ -169,7 +169,7 @@ def start_receiver():
 
     # create connection to the remote json collector ?
     if not debug_mode:
-        task = loop.create_task(handle_remoteclient(host, port))
+        task = loop.create_task(handle_remoteclient(remote_host, remote_port))
         loop.run_until_complete(task)
         tcp_writer = task.result()
     else:
@@ -179,8 +179,8 @@ def start_receiver():
     socket_server = asyncio.start_server(lambda r,w: cb_onconnect(r, w, 
                                                                   tcp_writer,
                                                                   debug_mode), 
-                                         host="0.0.0.0",
-                                         port=6003)
+                                         host=listen_ip,
+                                         port=listen_port)
 
     # run until complete
     abstract_server =  loop.run_until_complete(socket_server)
