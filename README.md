@@ -66,18 +66,18 @@ optional arguments:
 
 ```json
 {
-    'dns_message': 'AUTH_QUERY',
-    'socket_family': 'INET',
-    'socket protocol': 'UDP',
-    'from_address': '0.0.0.0',
-    'to_address': '184.26.161.130',
-    'query_time': '2020-05-29 13:46:23.322',
-    'response_time': '1970-01-01 01:00:00.000',
-    'latency': 0,
-    'query_type': 'A',
-    'query_name': 'a13-130.akagtm.org.',
-    'return_code': 'NOERROR',
-    'bytes': 4
+    "dns_message": "AUTH_QUERY",
+    "socket_family": "INET",
+    "socket protocol": "UDP",
+    "from_address": "0.0.0.0",
+    "to_address': '184.26.161.130",
+    "query_time": "2020-05-29 13:46:23.322",
+    "response_time": "1970-01-01 01:00:00.000",
+    "latency": 0,
+    "query_type": "A",
+    "query_name": "a13-130.akagtm.org.",
+    "return_code": "NOERROR",
+    "bytes": 4
 }
 ```
 
@@ -86,14 +86,14 @@ optional arguments:
 System service file for Centos7
 
 ```bash
-vim /etc/systemd/system/dnstap_receiver.service
+vim /etc/systemd/system/pdns_logger.service
 
 [Unit]
-Description=Python DNS tap Service
+Description=Python protobuf PDNS logger Service
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/dnstap_receiver -u /etc/dnsdist/dnstap.sock -j 10.0.0.2:6000
+ExecStart=/usr/local/bin/pdns_logger -j 10.0.0.2:6000
 Restart=on-abort
 Type=simple
 User=root
@@ -104,9 +104,9 @@ WantedBy=multi-user.target
 
 ```bash
 systemctl daemon-reload
-systemctl start dnstap_receiver
-systemctl status dnstap_receiver
-systemctl enable dnstap_receiver
+systemctl start pdns_logger
+systemctl status pdns_logger
+systemctl enable pdns_logger
 ```
 
 ## Usages
@@ -132,8 +132,20 @@ lua-config-file=/etc/pdns-recursor/recursor.lua
 vim /etc/pdns-recursor/recursor.lua
 
 ```
-protobufServer("10.0.0.97:50001", {logQueries=true, logResponses=true, exportTypes={'A', 'AAAA', 'CNAME', 'MX', 'PTR', 'NS', 'SPF', 'SRV', 'TXT'}} )
-outgoingProtobufServer("10.0.0.97:50001",  {logQueries=true, logResponses=true, exportTypes={'A', 'AAAA', 'CNAME', 'MX', 'PTR', 'NS', 'SPF', 'SRV', 'TXT'}})
+protobufServer("10.0.0.97:50001", {logQueries=true,
+                                   logResponses=true,
+                                   exportTypes={'A', 'AAAA',
+                                                'CNAME', 'MX', 
+                                                'PTR', 'NS',
+                                                'SPF', 'SRV',
+                                                'TXT'}} )
+outgoingProtobufServer("10.0.0.97:50001",  {logQueries=true,
+                                            logResponses=true,
+                                            exportTypes={'A', 'AAAA',
+                                                         'CNAME', 'MX',
+                                                         'PTR', 'NS',
+                                                         'SPF', 'SRV',
+                                                         'TXT'}})
 ```
 
 ### collect logs and send-it to ELK
