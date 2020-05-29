@@ -20,7 +20,8 @@ You can use it to collect DNS queries and responses and to log to syslog or a js
 * [Startup options](#startup-options)
 * [Output JSON format](#output-json-format)
 * [Systemd service file configuration](#systemd-service-file-configuration)
-* [Usages](#usages)
+* [PowerDNS configuration](#powerdns-configuration)
+* [JSON remote tcp collector](#json-remote-tcp-collector)
 
 ## Installation
 
@@ -62,7 +63,9 @@ optional arguments:
   -j J        write JSON payload to tcp/ip address <ip:port>
 ```
 
-## Output JSON format
+## JSON log format
+
+Each line will have the following format:
 
 ```json
 {
@@ -70,7 +73,7 @@ optional arguments:
     "socket_family": "INET",
     "socket protocol": "UDP",
     "from_address": "0.0.0.0",
-    "to_address': '184.26.161.130",
+    "to_address": "184.26.161.130",
     "query_time": "2020-05-29 13:46:23.322",
     "response_time": "1970-01-01 01:00:00.000",
     "latency": 0,
@@ -109,9 +112,11 @@ systemctl status pdns_logger
 systemctl enable pdns_logger
 ```
 
-## Usages
+## PowerDNS configuration
 
-### collect logs from dnsdist
+You need to configure dnsdist or pdns-recursor to active remote logging.
+ 
+### dnsdist
 
 vim /etc/dnsdist/dnsdist.conf
 
@@ -121,7 +126,9 @@ addAction(AllRule(),RemoteLogAction(rl))
 addResponseAction(AllRule(),RemoteLogResponseAction(rl))
 ```
 
-### collect logs from pdns-recursor
+Restart the loadbalancer.
+
+### pdns-recursor
 
 vim /etc/pdns-recursor/recursor.conf
 
@@ -148,7 +155,9 @@ outgoingProtobufServer("10.0.0.97:50001",  {logQueries=true,
                                                          'TXT'}})
 ```
 
-### collect logs and send-it to ELK
+Restart the recursor.
+
+## JSON remote tcp configuration
 
 vim /etc/logstash/conf.d/pdns-logger.conf
 
