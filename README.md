@@ -109,18 +109,20 @@ Keys description:
 
 ## Systemd service file configuration
 
-System service file for Centos7
+For more robustness, you can use systemd to start or stop the `pdns logger`.
+if the tcp connection is lost then systemd will automatically restart the `pdns logger`.
 
-```bash
 vim /etc/systemd/system/pdns_logger.service
 
+```bash
 [Unit]
 Description=Python protobuf PDNS logger Service
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/pdns_logger -j 10.0.0.2:6000
-Restart=on-abort
+ExecStart=/usr/local/bin/pdns_logger -j 10.0.0.235:6000
+Restart=always
+RestartSec=30
 Type=simple
 User=root
 
