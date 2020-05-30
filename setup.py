@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import setuptools
-from dnstap_receiver import __version__
+from pdns_logger import __version__
 
 with open("README.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()

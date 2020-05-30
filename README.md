@@ -16,7 +16,7 @@ You can use it to collect DNS queries and responses and to log to syslog or a js
 
 ## Table of contents
 * [Installation](#installation)
-* [Exectute pdns logger](#exectute-pdns-logger)
+* [Execute pdns logger](#execute-pdns-logger)
 * [Startup options](#startup-options)
 * [Output JSON format](#output-json-format)
 * [Systemd service file configuration](#systemd-service-file-configuration)
@@ -32,7 +32,7 @@ Only Python3 is supported.
 pip install pdns_logger
 ```
 
-After installation, you will have 'pdns_logger' binary available
+After installation, you will have `pdns logger` binary available
 
 ## Execute pdns logger 
 
@@ -178,7 +178,9 @@ outgoingProtobufServer("10.0.0.97:50001",  {logQueries=true,
 
 Restart the recursor.
 
-## JSON remote tcp configuration
+## Logstash configuration
+
+With `pdns logger`, you can send DNS logs to a JSON remote collector like logstash.
 
 vim /etc/logstash/conf.d/pdns-logger.conf
 
@@ -204,6 +206,10 @@ output {
   }
 }
 ```
+
+Configure your `pdns logger` and restart-it.
+
+Finally, you can have some dashboards on your DNS servers .
 
 ![kibana dashboard 1](https://github.com/dmachard/pdns_logger/blob/master/imgs/kibana_dashboard_1.png)
 
