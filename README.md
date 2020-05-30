@@ -156,6 +156,7 @@ You need to configure dnsdist or pdns-recursor to active remote logging.
 ### dnsdist
 
 Configure the dnsdist `/etc/dnsdist/dnsdist.conf` and add the following lines
+Set the newRemoteLogger function with the address of your pdns_logger instance.
 
 ```
 rl = newRemoteLogger("10.0.0.97:50001")
@@ -174,6 +175,7 @@ lua-config-file=/etc/pdns-recursor/recursor.lua
 ```
 
 Create the LUA file `/etc/pdns-recursor/recursor.lua`
+Set the protobufServer or outgoingProtobufServer functions with the address of your pdns_logger instance.
 
 ```
 protobufServer("10.0.0.97:50001", {logQueries=true,
