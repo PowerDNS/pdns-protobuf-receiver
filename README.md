@@ -112,7 +112,7 @@ Keys description:
 For more robustness, you can use systemd to start or stop the `pdns logger`.
 if the tcp connection is lost then systemd will automatically restart the `pdns logger`.
 
-vim /etc/systemd/system/pdns_logger.service
+Create the file `/etc/systemd/system/pdns_logger.service`
 
 ```bash
 [Unit]
@@ -155,7 +155,7 @@ You need to configure dnsdist or pdns-recursor to active remote logging.
  
 ### dnsdist
 
-vim /etc/dnsdist/dnsdist.conf
+Configure the dnsdist `/etc/dnsdist/dnsdist.conf` and add the following lines
 
 ```
 rl = newRemoteLogger("10.0.0.97:50001")
@@ -163,17 +163,17 @@ addAction(AllRule(),RemoteLogAction(rl))
 addResponseAction(AllRule(),RemoteLogResponseAction(rl))
 ```
 
-Restart the loadbalancer.
+Restart dnsdist.
 
 ### pdns-recursor
 
-vim /etc/pdns-recursor/recursor.conf
+Configure the powerdns recursor `/etc/pdns-recursor/recursor.conf` and add the following line
 
 ```
 lua-config-file=/etc/pdns-recursor/recursor.lua
 ```
 
-vim /etc/pdns-recursor/recursor.lua
+Create the LUA file `/etc/pdns-recursor/recursor.lua`
 
 ```
 protobufServer("10.0.0.97:50001", {logQueries=true,
