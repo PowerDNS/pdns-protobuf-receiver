@@ -210,7 +210,7 @@ input {
 
 filter {
   date {
-     match => [ "dt_query" , "yyyy-MM-dd HH:mm:ss.SSS" ]
+     match => [ "query_time" , "yyyy-MM-dd HH:mm:ss.SSS" ]
      target => "@timestamp"
   }
 }
