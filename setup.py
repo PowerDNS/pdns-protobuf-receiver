@@ -1,8 +1,12 @@
 #!/usr/bin/python
 
 import setuptools
-from pdns_logger import __version__
 
+with open("./kodi_remotecontrol/__init__.py", "r") as fh:
+    for line in fh.read().splitlines():
+        if line.startswith('__version__'):
+            VERSION = line.split('"')[1]
+      
 with open("README.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()
     
@@ -10,7 +14,7 @@ KEYWORDS = ('protobuf pdns logger json')
 
 setuptools.setup(
     name="pdns_logger",
-    version=__version__,
+    version=VERSION,
     author="Denis MACHARD",
     author_email="d.machard@gmail.com",
     description="Python PDNS logger to JSON stream ",
