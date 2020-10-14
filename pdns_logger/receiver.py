@@ -4,7 +4,9 @@ import asyncio
 import socket
 import json
 import sys
-import dnslib
+
+import dns.rdatatype
+import dns.rcode
 
 from datetime import datetime
 
@@ -84,13 +86,13 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
     
     dns_msg["latency"] = time_latency
 
-    dns_msg["query_type"] = dnslib.QTYPE[dns_pb2.question.qType]
+    dns_msg["query_type"] = dns.rdatatype.to_text(dns_pb2.question.qType)
     dns_msg["query_name"] = dns_pb2.question.qName
 
     if dns_pb2.response.rcode == 65536:
         dns_msg["return_code"] = "NETWORK_ERROR"
     else:
-        dns_msg["return_code"] = dnslib.RCODE[dns_pb2.response.rcode]
+        dns_msg["return_code"] = dns.rcode.to_text(dns_pb2.response.rcode)
     dns_msg["bytes"] = dns_pb2.inBytes
     
     if debug_mode:

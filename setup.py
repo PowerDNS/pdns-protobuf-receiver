@@ -33,7 +33,7 @@ setuptools.setup(
     ],
     entry_points={'console_scripts': ['pdns_logger = pdns_logger.receiver:start_receiver']},
     install_requires=[
-        "dnslib",
+        "dnspython",
         "protobuf"
     ]
 )
