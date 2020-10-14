@@ -2,7 +2,7 @@
 
 import setuptools
 
-with open("./kodi_remotecontrol/__init__.py", "r") as fh:
+with open("./pdns_logger/__init__.py", "r") as fh:
     for line in fh.read().splitlines():
         if line.startswith('__version__'):
             VERSION = line.split('"')[1]
