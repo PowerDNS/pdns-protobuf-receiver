@@ -98,7 +98,8 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
     dns_json = json.dumps(dns_msg)
 
     if debug_mode:
-       logging.debug(dns_json)
+       print(dns_json)
+    
     else:
         if tcp_writer.transport._conn_lost:
             # exit if we lost the connection with the remote collector
