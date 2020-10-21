@@ -20,7 +20,8 @@ from pdns_logger import protobuf
 
 # configure logs
 logging.basicConfig(format='%(asctime)s %(message)s',
-                    stream=sys.stdout, level=logging.DEBUG)
+                    stream=sys.stdout,
+                    level=logging.DEBUG)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-l",
@@ -201,6 +202,8 @@ def start_receiver():
     sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 30)
     sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
 
+    logging.debug("server listening")
+    
     # run event loop
     try:
         loop.run_forever()

@@ -1,4 +1,4 @@
-# PDNS protobuf logger to JSON stream
+# PowerDNS protobuf logger
 
 ![](https://github.com/dmachard/pdns_logger/workflows/Publish%20to%20PyPI/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -175,14 +175,6 @@ output {
   }
 }
 ```
-
-Configure your `pdns logger` and restart-it.
-
-Finally, you can have some dashboards on your DNS servers .
-
-![kibana dashboard 1](https://github.com/dmachard/pdns_logger/blob/master/imgs/kibana_dashboard_1.png)
-
-![kibana dashboard 2](https://github.com/dmachard/pdns_logger/blob/master/imgs/kibana_dashboard_2.png)
 
 ## About
 
