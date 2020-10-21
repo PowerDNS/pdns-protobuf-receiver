@@ -8,7 +8,7 @@ import sys
 import dns.rdatatype
 import dns.rcode
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 # wget https://raw.githubusercontent.com/PowerDNS/pdns/master/pdns/dnsmessage.proto
 # wget https://github.com/protocolbuffers/protobuf/releases/download/v3.12.2/protoc-3.12.2-linux-x86_64.zip
@@ -80,11 +80,13 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
 
         time_latency = round(float(time_rsp) - float(time_req), 6)
 
-    dt_query = datetime.fromtimestamp(float(time_req))
-    dns_msg["query_time"] = dt_query.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    #dt_query = datetime.fromtimestamp(float(time_req))
+    #dns_msg["query_time"] = dt_query.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    dns_msg["query_time"] = datetime.fromtimestamp(float(time_req), tz=timezone.utc).isoformat()
     
-    qt_response = datetime.fromtimestamp(float(time_rsp))
-    dns_msg["response_time"] = qt_response.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    #qt_response = datetime.fromtimestamp(float(time_rsp))
+    #dns_msg["response_time"] = qt_response.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    dns_msg["response_time"] = datetime.fromtimestamp(float(time_rsp), tz=timezone.utc).isoformat()
     
     dns_msg["latency"] = time_latency
 
