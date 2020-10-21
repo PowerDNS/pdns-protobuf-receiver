@@ -4,13 +4,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pdns_logger)
 
-| | |
-| ------------- | ------------- |
-| Author |  Denis Machard <d.machard@gmail.com> |
-| License |  MIT | 
-| PyPI |  https://pypi.org/project/pdns_logger/ |
-| | |
-
 PDNS logger is a daemon in Python 3 that acts a protobuf server for PowerDNS's products.
 You can use it to collect DNS queries and responses and to log to syslog or a json remote tcp collector.
 
@@ -19,9 +12,9 @@ You can use it to collect DNS queries and responses and to log to syslog or a js
 * [Execute pdns logger](#execute-pdns-logger)
 * [Startup options](#startup-options)
 * [Output JSON format](#output-json-format)
-* [Systemd service file configuration](#systemd-service-file-configuration)
 * [PowerDNS configuration](#powerdns-configuration)
 * [Logstash configuration](#logstash-configuration)
+* [About](#about)
 
 ## Installation
 
@@ -107,48 +100,6 @@ Keys description:
  - return_code: the response code sent back to the client (NXDOMAIN, NOERROR, ...)
  - bytes: size in bytes of the query or response
 
-## Systemd service file configuration
-
-For more robustness, you can use systemd to start or stop the `pdns logger`.
-if the tcp connection is lost then systemd will automatically restart the `pdns logger`.
-
-Create the file `/etc/systemd/system/pdns_logger.service`
-
-```bash
-[Unit]
-Description=Python protobuf PDNS logger Service
-After=network.target
-
-[Service]
-ExecStart=/usr/local/bin/pdns_logger -j 10.0.0.235:6000
-Restart=always
-RestartSec=30
-Type=simple
-User=root
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Activate the service to start on boot
-
-```bash
-systemctl daemon-reload
-systemctl enable pdns_logger
-```
-
-Now start the pdns-logger from systemd
-
-```bash
-systemctl start pdns_logger
-```
-
-Check the status
-
-```bash
-systemctl status pdns_logger
-```
-
 ## PowerDNS configuration
 
 You need to configure dnsdist or pdns-recursor to active remote logging.
@@ -233,4 +184,12 @@ Finally, you can have some dashboards on your DNS servers .
 
 ![kibana dashboard 2](https://github.com/dmachard/pdns_logger/blob/master/imgs/kibana_dashboard_2.png)
 
+## About
+
+| | |
+| ------------- | ------------- |
+| Author |  Denis Machard <d.machard@gmail.com> |
+| License |  MIT | 
+| PyPI |  https://pypi.org/project/pdns_logger/ |
+| | |
 
