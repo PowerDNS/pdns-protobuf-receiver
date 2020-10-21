@@ -38,7 +38,7 @@ The logger is listening by default on the 0.0.0.0 interface and 50001 tcp port a
 DNS queries and responses are also printed directly on stdout in JSON format.
 
 ```
-# pdns_logger
+# pdns_logger -v
 2020-05-29 18:39:08,579 Start pdns logger...
 2020-05-29 18:39:08,580 Using selector: EpollSelector
 ```
@@ -47,7 +47,7 @@ For the second mode, you need to configure the binary with the address of your r
 Start the pdns logger as below for example:
 
 ```
-# pdns_logger -j 10.0.0.235:6000
+# pdns_logger -j 10.0.0.235:6000 -v
 2020-05-29 18:39:08,579 Start pdns logger...
 2020-05-29 18:39:08,580 Using selector: EpollSelector
 2020-05-29 18:39:08,580 Connecting to 10.0.0.235 6000
