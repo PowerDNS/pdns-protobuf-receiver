@@ -19,7 +19,8 @@ from pdns_logger.dnsmessage_pb2 import PBDNSMessage
 from pdns_logger import protobuf
 
 # configure logs
-logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(message)s',
+                    stream=sys.stdout, level=logging.DEBUG)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-l",
