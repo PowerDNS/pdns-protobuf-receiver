@@ -96,17 +96,18 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
         dns_msg["return_code"] = dns.rcode.to_text(dns_pb2.response.rcode)
     dns_msg["bytes"] = dns_pb2.inBytes
     
+    dns_json = json.dumps(dns_msg)
+
     if debug_mode:
-       logging.info(dns_msg)
+       logging.info(dns_json)
     else:
         if tcp_writer.transport._conn_lost:
             # exit if we lost the connection with the remote collector
             loop.stop()
             raise Exception("connection lost with remote")
         else:
-            tcp_writer.write(json.dumps(dns_msg).encode() + b"\n")
-            #await tcp_writer.drain()
-        
+            tcp_writer.write(dns_json.encode() + b"\n")
+     
 async def cb_onconnect(reader, writer, tcp_writer, debug_mode):
     logging.info("connect accepted")
     
