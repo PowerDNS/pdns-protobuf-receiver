@@ -18,17 +18,13 @@ from datetime import datetime, timezone
 from pdns_logger.dnsmessage_pb2 import PBDNSMessage
 from pdns_logger import protobuf
 
-# configure logs
-logging.basicConfig(format='%(asctime)s %(message)s',
-                    stream=sys.stdout,
-                    level=logging.DEBUG)
-
 parser = argparse.ArgumentParser()
 parser.add_argument("-l",
                     default="0.0.0.0:50001",
                     help="listen protobuf dns message on tcp/ip address <ip:port>")
 parser.add_argument("-j",
                     help="write JSON payload to tcp/ip address <ip:port>")
+parser.add_argument('-v', action='store_true', help="verbose mode")  
 
 PBDNSMESSAGE_TYPE = { 1: "CLIENT_QUERY", 2: "CLIENT_RESPONSE",
                       3: "AUTH_QUERY", 4: "AUTH_RESPONSE" }
@@ -102,7 +98,7 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
     dns_json = json.dumps(dns_msg)
 
     if debug_mode:
-       logging.info(dns_json)
+       logging.debug(dns_json)
     else:
         if tcp_writer.transport._conn_lost:
             # exit if we lost the connection with the remote collector
@@ -112,7 +108,7 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
             tcp_writer.write(dns_json.encode() + b"\n")
      
 async def cb_onconnect(reader, writer, tcp_writer, debug_mode):
-    logging.info("connect accepted")
+    logging.debug("connect accepted")
     
     loop = asyncio.get_event_loop()
     protobuf_streamer = protobuf.ProtoBufHandler()
@@ -141,17 +137,27 @@ async def cb_onconnect(reader, writer, tcp_writer, debug_mode):
             logging.error("something happened: %s" % e)
     
 async def handle_remoteclient(host, port):
-    logging.info("Connecting to %s %s" % (host, port))
+    logging.debug("Connecting to %s %s" % (host, port))
     tcp_reader, tcp_writer = await asyncio.open_connection(host, int(port))
-    logging.info("Connected to %s %s" % (host, port))
+    logging.debug("Connected to %s %s" % (host, port))
     return tcp_writer
     
 def start_receiver():
     """start dnstap receiver"""
-    logging.info("Start pdns logger...")
-    
     # parse arguments
     args = parser.parse_args()
+
+    # configure logs
+    level = logging.INFO
+    if args.v:
+        level = logging.DEBUG
+    logging.basicConfig(format='%(asctime)s %(message)s',
+                        stream=sys.stdout,
+                        level=level)
+
+    logging.debug("Start pdns logger...")
+    
+    
 
     try:
         listen_ip, listen_port = args.l.split(":")
@@ -214,4 +220,4 @@ def start_receiver():
         
     if not debug_mode:
         tcp_writer.close()
-        logging.info("connection done")
+        logging.debug("connection done")
