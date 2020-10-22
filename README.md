@@ -1,11 +1,10 @@
 # PowerDNS protobuf receiver
 
-![](https://github.com/dmachard/pdns_logger/workflows/Publish%20to%20PyPI/badge.svg)
+![](https://github.com/dmachard/pdns-protobuf-receiver/workflows/Publish/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pdns_logger)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pdns_protobuf_receiver)
 
-The `pdns_protobuf` receiver is a daemon in Python 3 that acts a protobuf server for PowerDNS's products.
-You can use it to collect DNS queries and responses and to log to syslog or a json remote tcp collector.
+The `pdns_protobuf receiver` is a daemon in Python 3 that acts a protobuf server for PowerDNS's products. You can use it to collect DNS queries and responses and to log to syslog or a json remote tcp collector.
 
 ## Table of contents
 * [Installation](#installation)
