@@ -17,7 +17,7 @@ You can use it to collect DNS queries and responses and to log to syslog or a js
 
 ## Installation
 
-From pypi, deploy the `pdns_protobuf` receiver with the pip command.
+From pypi, deploy the `pdns_protobuf_receiver` with the pip command.
 Only Python3 is supported.
 
 ```python
@@ -32,21 +32,21 @@ Two modes exists to execute the `pdns_protobuf`:
  - write output to stdout
  - write output to a remote tcp
  
-To run the pdns_protbuf receiver in the first mode, execute the following command without arguments. 
-The receiver is listening by default on the 0.0.0.0 interface and 50001 tcp port and
-DNS queries and responses are also printed directly on stdout in JSON format.
+The receiver is listening by default on the 0.0.0.0 interface and 50001 tcp port 
+
+If you want to print DNS queries and responses to stdout in JSON format, then execute the `pdns_protobuf` receiver as below: 
 
 ```
-# pdns_pb_recv -v
+# pdns_protobuf_receiver -v
 2020-05-29 18:39:08,579 Start pdns protobuf receiver...
 2020-05-29 18:39:08,580 Using selector: EpollSelector
 ```
 
-For the second mode, you need to configure the binary with the address of your remote tcp collector.
-Start the pdns_protobuf receiver as below for example:
+If you want to resend protobuf message to your remote tcp collector
+Start the pdns_protobuf receiver as below:
 
 ```
-# pdns_pb_recv -j 10.0.0.235:6000 -v
+# pdns_protobuf_receiver -j 10.0.0.235:6000 -v
 2020-05-29 18:39:08,579 Start pdns protobuf receiver...
 2020-05-29 18:39:08,580 Using selector: EpollSelector
 2020-05-29 18:39:08,580 Connecting to 10.0.0.235 6000
