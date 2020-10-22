@@ -15,8 +15,8 @@ from datetime import datetime, timezone
 # python3 -m pip install protobuf
 # protoc --python_out=. dnstap_pb2.proto
 
-from pdns_logger.dnsmessage_pb2 import PBDNSMessage
-from pdns_logger import protobuf
+from pdns_protobuf_receiver.dnsmessage_pb2 import PBDNSMessage
+from pdns_protobuf_receiver import protobuf
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-l",
@@ -76,12 +76,7 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
 
         time_latency = round(float(time_rsp) - float(time_req), 6)
 
-    #dt_query = datetime.fromtimestamp(float(time_req))
-    #dns_msg["query_time"] = dt_query.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
     dns_msg["query_time"] = datetime.fromtimestamp(float(time_req), tz=timezone.utc).isoformat()
-    
-    #qt_response = datetime.fromtimestamp(float(time_rsp))
-    #dns_msg["response_time"] = qt_response.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
     dns_msg["response_time"] = datetime.fromtimestamp(float(time_rsp), tz=timezone.utc).isoformat()
     
     dns_msg["latency"] = time_latency
@@ -156,7 +151,7 @@ def start_receiver():
                         stream=sys.stdout,
                         level=level)
 
-    logging.debug("Start pdns logger...")
+    logging.debug("Start pdns protobuf receiver...")
     
     
 

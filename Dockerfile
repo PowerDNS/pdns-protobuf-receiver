@@ -1,24 +1,24 @@
 FROM python:3.8-alpine
 
-LABEL name="PDNS logger" \
-      description="PDNS logger" \
-      url="https://github.com/dmachard/pdns-logger" \
+LABEL name="PDNS protobuf receiver" \
+      description="PDNS protobuf receiver" \
+      url="https://github.com/dmachard/pdns-protobuf-receiver" \
       maintainer="d.machard@gmail.com"
       
-WORKDIR /home/pdnslogger
+WORKDIR /home/pdnspb
 
-COPY . /home/pdnslogger/
+COPY . /home/pdnspb/
 
 RUN true \
-    && adduser -D pdnslogger \
+    && adduser -D pdnspb \
     && pip install --no-cache-dir dnspython protobuf\
-    && cd /home/pdnslogger \
+    && cd /home/pdnspb \
     && chmod 755 start.sh \
-    && chown -R pdnslogger:pdnslogger /home/pdnslogger \
+    && chown -R pdnspb:pdnspb /home/pdnspb \
     && true
     
-USER pdnslogger
+USER pdnspb
 
 EXPOSE 50001/tcp
 
-ENTRYPOINT ["/home/pdnslogger/start.sh"]
+ENTRYPOINT ["/home/pdnspb/start.sh"]

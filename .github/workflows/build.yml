@@ -23,4 +23,4 @@ jobs:
         python setup.py sdist bdist_wheel
     - name: Build the Docker image
       run: |
-        docker build . --file Dockerfile -t pdns-logger
+        docker build . --file Dockerfile -t pdns-protobuf-receiver
