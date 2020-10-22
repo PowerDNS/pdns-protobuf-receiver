@@ -173,5 +173,7 @@ Restart the recursor.
 | ------------- | ------------- |
 | Author |  Denis Machard <d.machard@gmail.com> |
 | PyPI |  https://pypi.org/project/pdns_protobuf_receiver/ |
+| Github | https://github.com/dmachard/pdns-protobuf-receiver |
+| DockerHub | https://hub.docker.com/r/dmachard/pdns-protobuf-receiver  |
 | | |
 

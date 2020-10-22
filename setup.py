@@ -17,7 +17,7 @@ setuptools.setup(
     version=VERSION,
     author="Denis MACHARD",
     author_email="d.machard@gmail.com",
-    description="Python PDNS logger to JSON stream ",
+    description="Python PDNS protobuf receiver to JSON stream",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     url="https://github.com/dmachard/pdns-protobuf-receiver",
