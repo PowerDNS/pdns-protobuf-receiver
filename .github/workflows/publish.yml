@@ -27,3 +27,17 @@ jobs:
     - name: Upload to PyPI
       run: |
         twine upload dist/* -u ${{ secrets.PYPI_LOGIN }} -p ${{ secrets.PYPI_PASSWORD }}
+    - name: Build the Docker image
+      run: |
+        docker build . --file Dockerfile -t pdns-protobuf-receiver
+    - name: Tag image
+      run: |
+        VERSION=$(cat ./pdns_protobuf_receiver/__init__.py | tr '"' $'\n' | sed -n 2p)
+        docker tag pdns-protobuf-receiver dmachard/pdns-protobuf-receiver:${VERSION}
+        docker tag pdns-protobuf-receiver dmachard/pdns-protobuf-receiver:latest
+    - name: Upload to DockerHub
+      run: |
+        docker login -u ${{ secrets.DOCKERHUB_LOGIN }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+        VERSION=$(cat ./pdns_protobuf_receiver/__init__.py | tr '"' $'\n' | sed -n 2p)
+        docker push dmachard/pdns-protobuf-receiver:latest
+        docker push dmachard/pdns-protobuf-receiver:${VERSION}
