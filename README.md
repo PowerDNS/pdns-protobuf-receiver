@@ -17,6 +17,8 @@ You can use it to collect DNS queries and responses and to log to syslog or a js
 
 ## Installation
 
+### PyPI
+
 From pypi, deploy the `pdns_protobuf_receiver` with the pip command.
 Only Python3 is supported.
 
@@ -26,12 +28,28 @@ pip install pdns_logger
 
 After installation, you will have `pdns_protobuf_receiver` binary available
 
+### Docker Hub
+
+Pull the pdns-protobuf-receiver image from Docker Hub.
+
+```bash
+docker pull dmachard/pdns-protobuf-receiver:latest
+```
+
+Deploy the container
+
+```bash
+docker run -d -p 50001:50001 --name=pdns-pb01 dmachard/pdns-protobuf-receiver
+```
+
+Follow containers logs 
+
+```bash
+docker logs pdns-pb01 -f
+```
+
 ## Execute receiver
 
-Two modes exists to execute the `pdns_protobuf`:
- - write output to stdout
- - write output to a remote tcp
- 
 The receiver is listening by default on the 0.0.0.0 interface and 50001 tcp port 
 
 If you want to print DNS queries and responses to stdout in JSON format, then execute the `pdns_protobuf` receiver as below: 
@@ -58,10 +76,13 @@ Start the pdns_protobuf receiver as below:
 Command line options are:
 
 ```
+usage: -c [-h] [-l L] [-j J] [-v]
+
 optional arguments:
   -h, --help  show this help message and exit
   -l L        listen protobuf dns message on tcp/ip address <ip:port>
   -j J        write JSON payload to tcp/ip address <ip:port>
+  -v          verbose mode
 ```
 
 ## JSON log format
