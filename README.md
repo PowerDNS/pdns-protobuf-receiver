@@ -2,9 +2,9 @@
 
 ![](https://github.com/dmachard/pdns-protobuf-receiver/workflows/Publish/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pdns_protobuf_receiver)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pdns-protobuf-receiver)
 
-The `pdns_protobuf receiver` is a daemon in Python 3 that acts a protobuf server for PowerDNS's products. You can use it to collect DNS queries and responses and to log to syslog or a json remote tcp collector.
+The `pdns_protobuf_receiver` is a daemon in Python 3 that acts a protobuf server for PowerDNS's products. You can use it to collect DNS queries and responses and to log to syslog or a json remote tcp collector.
 
 ## Table of contents
 * [Installation](#installation)
@@ -22,7 +22,7 @@ From pypi, deploy the `pdns_protobuf_receiver` with the pip command.
 Only Python3 is supported.
 
 ```python
-pip install pdns_logger
+pip install pdns-protobuf-receiver
 ```
 
 After installation, you will have `pdns_protobuf_receiver` binary available
@@ -126,7 +126,8 @@ You need to configure dnsdist or pdns-recursor to active remote logging.
 ### dnsdist
 
 Configure the dnsdist `/etc/dnsdist/dnsdist.conf` and add the following lines
-Set the newRemoteLogger function with the address of your pdns_logger instance.
+Set the newRemoteLogger function with the address of your pdns_protobuf_receiver
+instance.
 
 ```
 rl = newRemoteLogger("10.0.0.97:50001")
@@ -171,7 +172,7 @@ Restart the recursor.
 | | |
 | ------------- | ------------- |
 | Author |  Denis Machard <d.machard@gmail.com> |
-| PyPI |  https://pypi.org/project/pdns_protobuf_receiver/ |
+| PyPI |  https://pypi.org/project/pdns-protobuf-receiver/ |
 | Github | https://github.com/dmachard/pdns-protobuf-receiver |
 | DockerHub | https://hub.docker.com/r/dmachard/pdns-protobuf-receiver  |
 | | |
