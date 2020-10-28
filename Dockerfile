@@ -21,4 +21,4 @@ USER pdnspb
 
 EXPOSE 50001/tcp
 
-ENTRYPOINT ["/home/pdnspb/start.sh"]
+ENTRYPOINT ["python", "-c", "import pdns_protobuf_receiver; pdns_protobuf_receiver.start_receiver()"]
