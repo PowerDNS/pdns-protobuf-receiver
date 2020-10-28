@@ -13,7 +13,6 @@ RUN true \
     && adduser -D pdnspb \
     && pip install --no-cache-dir dnspython protobuf\
     && cd /home/pdnspb \
-    && chmod 755 start.sh \
     && chown -R pdnspb:pdnspb /home/pdnspb \
     && true
     
