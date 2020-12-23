@@ -43,15 +43,20 @@ from pdns_protobuf_receiver.dnsmessage_pb2 import PBDNSMessage
 from pdns_protobuf_receiver import protobuf
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-l",
-                    default="0.0.0.0:50001",
-                    help="listen protobuf dns message on tcp/ip address <ip:port>")
-parser.add_argument("-j",
-                    help="write JSON payload to tcp/ip address <ip:port>")
-parser.add_argument('-v', action='store_true', help="verbose mode")
+parser.add_argument(
+    "-l",
+    default="0.0.0.0:50001",
+    help="listen protobuf dns message on tcp/ip address <ip:port>",
+)
+parser.add_argument("-j", help="write JSON payload to tcp/ip address <ip:port>")
+parser.add_argument("-v", action="store_true", help="verbose mode")
 
-PBDNSMESSAGE_TYPE = {1: "CLIENT_QUERY", 2: "CLIENT_RESPONSE",
-                     3: "AUTH_QUERY", 4: "AUTH_RESPONSE"}
+PBDNSMESSAGE_TYPE = {
+    1: "CLIENT_QUERY",
+    2: "CLIENT_RESPONSE",
+    3: "AUTH_QUERY",
+    4: "AUTH_RESPONSE",
+}
 PBDNSMESSAGE_SOCKETFAMILY = {1: "IPv4", 2: "IPv6"}
 
 PBDNSMESSAGE_SOCKETPROTOCOL = {1: "UDP", 2: "TCP"}
@@ -67,7 +72,7 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
     dns_msg["socket protocol"] = PBDNSMESSAGE_SOCKETPROTOCOL[dns_pb2.socketProtocol]
 
     dns_msg["from_address"] = "0.0.0.0"
-    from_addr = getattr(dns_pb2, 'from')
+    from_addr = getattr(dns_pb2, "from")
     if len(from_addr):
         if dns_pb2.socketFamily == PBDNSMessage.SocketFamily.INET:
             dns_msg["from_address"] = socket.inet_ntop(socket.AF_INET, from_addr)
@@ -75,7 +80,7 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
             dns_msg["from_address"] = socket.inet_ntop(socket.AF_INET6, from_addr)
 
     dns_msg["to_address"] = "0.0.0.0"
-    to_addr = getattr(dns_pb2, 'to')
+    to_addr = getattr(dns_pb2, "to")
     if len(to_addr):
         if dns_pb2.socketFamily == PBDNSMessage.SocketFamily.INET:
             dns_msg["to_address"] = socket.inet_ntop(socket.AF_INET, to_addr)
@@ -86,13 +91,17 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
     time_rsp = 0
     time_latency = 0
 
-    if dns_pb2.type in [PBDNSMessage.Type.DNSQueryType,
-                        PBDNSMessage.Type.DNSOutgoingQueryType]:
+    if dns_pb2.type in [
+        PBDNSMessage.Type.DNSQueryType,
+        PBDNSMessage.Type.DNSOutgoingQueryType,
+    ]:
         utime_req = "%s" % dns_pb2.timeUsec
         time_req = "%s.%s" % (dns_pb2.timeSec, utime_req.zfill(6))
 
-    if dns_pb2.type in [PBDNSMessage.Type.DNSResponseType,
-                        PBDNSMessage.Type.DNSIncomingResponseType]:
+    if dns_pb2.type in [
+        PBDNSMessage.Type.DNSResponseType,
+        PBDNSMessage.Type.DNSIncomingResponseType,
+    ]:
         utime_rsp = "%s" % dns_pb2.timeUsec
         time_rsp = "%s.%s" % (dns_pb2.timeSec, utime_rsp.zfill(6))
 
@@ -101,8 +110,12 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
 
         time_latency = round(float(time_rsp) - float(time_req), 6)
 
-    dns_msg["query_time"] = datetime.fromtimestamp(float(time_req), tz=timezone.utc).isoformat()
-    dns_msg["response_time"] = datetime.fromtimestamp(float(time_rsp), tz=timezone.utc).isoformat()
+    dns_msg["query_time"] = datetime.fromtimestamp(
+        float(time_req), tz=timezone.utc
+    ).isoformat()
+    dns_msg["response_time"] = datetime.fromtimestamp(
+        float(time_rsp), tz=timezone.utc
+    ).isoformat()
 
     dns_msg["latency"] = time_latency
 
@@ -152,7 +165,9 @@ async def cb_onconnect(reader, writer, tcp_writer, debug_mode):
             payload = protobuf_streamer.decode()
 
             # create a task to decode it
-            loop.create_task(cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop))
+            loop.create_task(
+                cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop)
+            )
 
         except Exception as e:
             running = False
@@ -175,9 +190,9 @@ def start_receiver():
     level = logging.INFO
     if args.v:
         level = logging.DEBUG
-    logging.basicConfig(format='%(asctime)s %(message)s',
-                        stream=sys.stdout,
-                        level=level)
+    logging.basicConfig(
+        format="%(asctime)s %(message)s", stream=sys.stdout, level=level
+    )
 
     logging.debug("Start pdns protobuf receiver...")
 
@@ -211,11 +226,11 @@ def start_receiver():
         tcp_writer = None
 
     # asynchronous server socket
-    socket_server = asyncio.start_server(lambda r, w: cb_onconnect(r, w,
-                                                                   tcp_writer,
-                                                                   debug_mode),
-                                         host=listen_ip,
-                                         port=listen_port)
+    socket_server = asyncio.start_server(
+        lambda r, w: cb_onconnect(r, w, tcp_writer, debug_mode),
+        host=listen_ip,
+        port=listen_port,
+    )
 
     # run until complete
     abstract_server = loop.run_until_complete(socket_server)
