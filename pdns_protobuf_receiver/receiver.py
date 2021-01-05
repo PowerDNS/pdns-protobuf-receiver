@@ -107,8 +107,8 @@ def parse_pb_msg(dns_pb2, dns_msg):
         "to": "to_address",  # 7
         "inBytes": "bytes",  # 8
         "id": "dns_id",  # 11
-        # originalRequestorSubnet # 14
-        # requestorId # 15
+        "originalRequestorSubnet": "original_requestor_subnet",  # 14
+        "requestorId": "requestor_id",  # 15
         "initialRequestId": "initial_request_id",  # 16
         "deviceId": "device_id",  # 17
         "newlyObservedDomain": "nod",  # 18
@@ -117,7 +117,7 @@ def parse_pb_msg(dns_pb2, dns_msg):
         "toPort": "to_port",  # 21
     }
 
-    print(dns_pb2)
+    # print(dns_pb2)
     for key, val in pb_fields_map.items():
         if dns_pb2.HasField(key):
             if key in ["from", "to"]:
@@ -127,6 +127,12 @@ def parse_pb_msg(dns_pb2, dns_msg):
                         dns_msg[val] = socket.inet_ntop(socket.AF_INET, addr)
                     if dns_pb2.socketFamily == PBDNSMessage.SocketFamily.INET6:
                         dns_msg[val] = socket.inet_ntop(socket.AF_INET6, addr)
+            elif key == "originalRequestorSubnet":
+                ors = getattr(dns_pb2, key)
+                if len(ors) == 4:
+                    dns_msg[val] = socket.inet_ntop(socket.AF_INET, ors)
+                elif len(ors) == 16:
+                    dns_msg[val] = socket.inet_ntop(socket.AF_INET6, ors)
             elif isinstance(val, str):
                 if key in {"messageId", "initialRequestId"}:
                     dns_msg[val] = binascii.hexlify(
