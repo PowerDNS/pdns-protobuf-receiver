@@ -117,7 +117,7 @@ def parse_pb_msg(dns_pb2, dns_msg):
         "toPort": "to_port",  # 21
     }
 
-    # print(dns_pb2)
+    print(dns_pb2)
     for key, val in pb_fields_map.items():
         if dns_pb2.HasField(key):
             if key in ["from", "to"]:
@@ -146,11 +146,7 @@ def parse_pb_msg_query(dns_pb2, dns_msg):
     """
     Parse Query Fields in Protobuf PowerDNS Messages
     """
-    pb_fields_map = {
-        "qName": "name",
-        "qType": "type",
-        "qClass": "class"
-    }
+    pb_fields_map = {"qName": "name", "qType": "type", "qClass": "class"}
 
     query = dns_pb2.question
     query_d = {}
@@ -196,7 +192,9 @@ def parse_pb_msg_response(dns_pb2, dns_msg):
             if dns_pb2.response.rcode == 65536:
                 dns_msg["response"]["return_code"] = "NETWORK_ERROR"
             else:
-                dns_msg["response"]["return_code"] = dns.rcode.to_text(dns_pb2.response.rcode)
+                dns_msg["response"]["return_code"] = dns.rcode.to_text(
+                    dns_pb2.response.rcode
+                )
         elif dns_pb2.response.HasField(key):
             if isinstance(val, str):
                 res = getattr(dns_pb2.response, key)
