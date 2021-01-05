@@ -103,6 +103,8 @@ def parse_pb_msg(dns_pb2, dns_msg):
         "serverIdentity": "server_identity",  # 3
         "socketFamily": ["socket_family", PBDNSMESSAGE_SOCKETFAMILY],  # 4
         "socketProtocol": ["socket_protocol", PBDNSMESSAGE_SOCKETPROTOCOL],  # 5
+        "from": "from_address",  # 6
+        "to": "to_address",  # 7
         "inBytes": "bytes",  # 8
         "id": "dns_id",  # 11
         # originalRequestorSubnet # 14
@@ -118,7 +120,14 @@ def parse_pb_msg(dns_pb2, dns_msg):
     # print(dns_pb2)
     for key, val in pb_fields_map.items():
         if dns_pb2.HasField(key):
-            if isinstance(val, str):
+            if key in ["from", "to"]:
+                addr = getattr(dns_pb2, key)
+                if len(addr) > 0:
+                    if dns_pb2.socketFamily == PBDNSMessage.SocketFamily.INET:
+                        dns_msg[val] = socket.inet_ntop(socket.AF_INET, addr)
+                    if dns_pb2.socketFamily == PBDNSMessage.SocketFamily.INET6:
+                        dns_msg[val] = socket.inet_ntop(socket.AF_INET6, addr)
+            elif isinstance(val, str):
                 if key in {"messageId", "initialRequestId"}:
                     dns_msg[val] = binascii.hexlify(
                         bytearray(getattr(dns_pb2, key))
@@ -135,10 +144,27 @@ def parse_pb_msg(dns_pb2, dns_msg):
 
 def parse_pb_msg_query(dns_pb2, dns_msg):
     """
-    Parse RRS Fields in Protobuf PowerDNS Messages
+    Parse Query Fields in Protobuf PowerDNS Messages
     """
     pb_fields_map = {
+        "qName": "name",
+        "qType": "type",
+        "qClass": "class"
     }
+
+    query = dns_pb2.question
+    query_d = {}
+    for key, val in pb_fields_map.items():
+        if query.HasField(key):
+            if key == "qType":
+                query_d[val] = dns.rdatatype.to_text(getattr(query, key))
+            elif key == "qClass":
+                query_d[val] = dns.rdataclass.to_text(getattr(query, key))
+            else:
+                query_d[val] = getattr(query, key)
+
+    dns_msg["query"] = query_d
+
 
 def parse_pb_msg_response(dns_pb2, dns_msg):
     """
@@ -224,22 +250,6 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
     dns_msg = {}
     parse_pb_msg(dns_pb2, dns_msg)
 
-    dns_msg["from_address"] = "0.0.0.0"
-    from_addr = getattr(dns_pb2, "from")
-    if len(from_addr):
-        if dns_pb2.socketFamily == PBDNSMessage.SocketFamily.INET:
-            dns_msg["from_address"] = socket.inet_ntop(socket.AF_INET, from_addr)
-        if dns_pb2.socketFamily == PBDNSMessage.SocketFamily.INET6:
-            dns_msg["from_address"] = socket.inet_ntop(socket.AF_INET6, from_addr)
-
-    dns_msg["to_address"] = "0.0.0.0"
-    to_addr = getattr(dns_pb2, "to")
-    if len(to_addr):
-        if dns_pb2.socketFamily == PBDNSMessage.SocketFamily.INET:
-            dns_msg["to_address"] = socket.inet_ntop(socket.AF_INET, to_addr)
-        if dns_pb2.socketFamily == PBDNSMessage.SocketFamily.INET6:
-            dns_msg["to_address"] = socket.inet_ntop(socket.AF_INET6, to_addr)
-
     time_req = 0
     time_rsp = 0
     time_latency = 0
@@ -275,9 +285,7 @@ async def cb_onpayload(dns_pb2, payload, tcp_writer, debug_mode, loop):
 
     dns_msg["latency"] = time_latency
 
-    dns_msg["query"] = {}
-    dns_msg["query"]["type"] = dns.rdatatype.to_text(dns_pb2.question.qType)
-    dns_msg["query"]["name"] = dns_pb2.question.qName
+    parse_pb_msg_query(dns_pb2, dns_msg)
 
     dns_json = json.dumps(dns_msg)
 
