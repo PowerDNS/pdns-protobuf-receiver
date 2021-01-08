@@ -230,11 +230,40 @@ def parse_pb_msg_rrs(dns_pb2, dns_msg):
             res = getattr(rr, key)
             if key == "rdata":
                 rr_dict[val] = {}
-                rdata = dns.rdata.from_wire(
-                    rr_dict["class"], rr_dict["type"], res, 0, len(res)
-                )
+                if rr.type in [dns.rdatatype.A, dns.rdatatype.AAAA]:
+                    rdata = dns.rdata.from_wire(
+                        rr_dict["class"], rr_dict["type"], res, 0, len(res)
+                    )
+                else:
+                    try:
+                        rdata = dns.rdata.from_text(
+                            rr_dict["class"], rr_dict["type"], res.decode()
+                        )
+                    except UnicodeDecodeError:
+                        rdata = dns.rdata.from_wire(
+                            rr_dict["class"], rr_dict["type"], res, 0, len(res)
+                        )
+                    except dns.exception.SyntaxError as e:
+                        # Fix for MX & SRV as info sent by Recursors does
+                        # not contain the preference/priority/port (int value)
+                        # like "10 mymx.e.com" for MX
+                        # Stays here in case it is fixed upstream
+                        if rr.type == dns.rdatatype.MX:
+                            rr_dict[val]["exchange"] = str(res.decode())
+                            break
+                        elif rr.type == dns.rdatatype.SRV:
+                            rr_dict[val]["target"] = str(res.decode())
+                            break
+                        else:
+                            raise e
+
                 for k in get_rdata_attributes(rdata):
-                    rr_dict[val][k] = getattr(rdata, k)
+                    if rr.type == dns.rdatatype.TXT:
+                        text_list = getattr(rdata, k)
+                        text_list = [str(i.decode()) for i in text_list]
+                        rr_dict[val][k] = " ".join(text_list)
+                    else:
+                        rr_dict[val][k] = str(getattr(rdata, k))
             elif key == "class":
                 rr_dict[val] = dns.rdataclass.to_text(res)
             elif key == "type":
