@@ -201,12 +201,18 @@ def parse_pb_msg_response(dns_pb2, dns_msg):
                 dns_msg["response"]["return_code"] = dns.rcode.to_text(
                     dns_pb2.response.rcode
                 )
-        elif dns_pb2.response.HasField(key):
-            if isinstance(val, str):
-                res = getattr(dns_pb2.response, key)
-                resp[val] = res
-            else:
-                resp[val[0]] = val[1][getattr(dns_pb2.response, key)]
+        else:
+            try:
+                assert dns_pb2.response.HasField(key)
+                if isinstance(val, str):
+                    res = getattr(dns_pb2.response, key)
+                    resp[val] = res
+                else:
+                    resp[val[0]] = val[1][getattr(dns_pb2.response, key)]
+            except AssertionError:
+                # take into account fields map that may not
+                # exist due to pb message version
+                pass
 
 
 def parse_pb_msg_rrs(dns_pb2, dns_msg):
