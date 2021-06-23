@@ -5,39 +5,50 @@ on:
     types: [published]
 
 jobs:
-  release:
+  publish-pypi:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Setup Python
-      uses: actions/setup-python@v1
-      with:
-        python-version: "3.7"
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
         pip install twine
         pip install dnslib protobuf
+
+    - id: pkg_version
+      run: echo "##[set-output name=data;]$(echo ${{ github.event.release.tag_name }} | cut -c2-)"
+
     - name: Build Python package
       run: |
+        python -c 'import jinja2;jinja2.Template(open("setup.j2").read()).stream(version="${{ steps.pkg_version.outputs.data }}").dump("setup.py")'
         python setup.py sdist bdist_wheel
+
     - name: Twine check
       run: |
         twine check dist/*
+
     - name: Upload to PyPI
       run: |
         twine upload dist/* -u ${{ secrets.PYPI_LOGIN }} -p ${{ secrets.PYPI_PASSWORD }}
+
+  publish-dockerhub:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
     - name: Build the Docker image
       run: |
         docker build . --file Dockerfile -t pdns-protobuf-receiver
+
     - name: Tag image
       run: |
-        VERSION=$(cat ./pdns_protobuf_receiver/__init__.py | tr '"' $'\n' | sed -n 2p)
-        docker tag pdns-protobuf-receiver dmachard/pdns-protobuf-receiver:${VERSION}
+        docker tag pdns-protobuf-receiver dmachard/pdns-protobuf-receiver:${{ github.event.release.tag_name }}
         docker tag pdns-protobuf-receiver dmachard/pdns-protobuf-receiver:latest
+
     - name: Upload to DockerHub
       run: |
         docker login -u ${{ secrets.DOCKERHUB_LOGIN }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-        VERSION=$(cat ./pdns_protobuf_receiver/__init__.py | tr '"' $'\n' | sed -n 2p)
         docker push dmachard/pdns-protobuf-receiver:latest
-        docker push dmachard/pdns-protobuf-receiver:${VERSION}
+        docker push dmachard/pdns-protobuf-receiver:${{ github.event.release.tag_name }}

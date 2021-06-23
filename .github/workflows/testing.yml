@@ -4,19 +4,21 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   release:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v1
-    - name: Setup Python
-      uses: actions/setup-python@v1
-      with:
-        python-version: "3.7"
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+
     - name: Install dnsdist
       run: |
         sudo apt-get install -y dnsdist net-tools
+
     - name: Configure dnsdist to activate protobuf
       run: |
         sudo systemctl stop dnsdist
@@ -27,6 +29,7 @@ jobs:
         sudo systemctl start dnsdist
         sudo systemctl status dnsdist
         sudo netstat -anp | grep dnsdist
+        
     - name: Run Python tests 
       run: |
         sudo python3 -m pip install protobuf
