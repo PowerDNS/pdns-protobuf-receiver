@@ -32,7 +32,7 @@ jobs:
         
     - name: Run Python tests 
       run: |
-        sudo python3 -m pip install protobuf
+        sudo python3 -m pip install --upgrade protobuf
         sudo python3 -m pip install --upgrade dnspython
         sudo python3 -m unittest tests.test_stdout -v
         sudo python3 -m unittest tests.test_usage -v
