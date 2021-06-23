@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto2',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x10\x64nsmessage.proto\"\xdc\t\n\x0cPBDNSMessage\x12 \n\x04type\x18\x01 \x02(\x0e\x32\x12.PBDNSMessage.Type\x12\x11\n\tmessageId\x18\x02 \x01(\x0c\x12\x16\n\x0eserverIdentity\x18\x03 \x01(\x0c\x12\x30\n\x0csocketFamily\x18\x04 \x01(\x0e\x32\x1a.PBDNSMessage.SocketFamily\x12\x34\n\x0esocketProtocol\x18\x05 \x01(\x0e\x32\x1c.PBDNSMessage.SocketProtocol\x12\x0c\n\x04\x66rom\x18\x06 \x01(\x0c\x12\n\n\x02to\x18\x07 \x01(\x0c\x12\x0f\n\x07inBytes\x18\x08 \x01(\x04\x12\x0f\n\x07timeSec\x18\t \x01(\r\x12\x10\n\x08timeUsec\x18\n \x01(\r\x12\n\n\x02id\x18\x0b \x01(\r\x12+\n\x08question\x18\x0c \x01(\x0b\x32\x19.PBDNSMessage.DNSQuestion\x12+\n\x08response\x18\r \x01(\x0b\x32\x19.PBDNSMessage.DNSResponse\x12\x1f\n\x17originalRequestorSubnet\x18\x0e \x01(\x0c\x12\x13\n\x0brequestorId\x18\x0f \x01(\t\x12\x18\n\x10initialRequestId\x18\x10 \x01(\x0c\x12\x10\n\x08\x64\x65viceId\x18\x11 \x01(\x0c\x12\x1b\n\x13newlyObservedDomain\x18\x12 \x01(\x08\x12\x12\n\ndeviceName\x18\x13 \x01(\t\x12\x10\n\x08\x66romPort\x18\x14 \x01(\r\x12\x0e\n\x06toPort\x18\x15 \x01(\r\x1a;\n\x0b\x44NSQuestion\x12\r\n\x05qName\x18\x01 \x01(\t\x12\r\n\x05qType\x18\x02 \x01(\r\x12\x0e\n\x06qClass\x18\x03 \x01(\r\x1a\xe6\x02\n\x0b\x44NSResponse\x12\r\n\x05rcode\x18\x01 \x01(\r\x12,\n\x03rrs\x18\x02 \x03(\x0b\x32\x1f.PBDNSMessage.DNSResponse.DNSRR\x12\x15\n\rappliedPolicy\x18\x03 \x01(\t\x12\x0c\n\x04tags\x18\x04 \x03(\t\x12\x14\n\x0cqueryTimeSec\x18\x05 \x01(\r\x12\x15\n\rqueryTimeUsec\x18\x06 \x01(\r\x12\x33\n\x11\x61ppliedPolicyType\x18\x07 \x01(\x0e\x32\x18.PBDNSMessage.PolicyType\x12\x1c\n\x14\x61ppliedPolicyTrigger\x18\x08 \x01(\t\x12\x18\n\x10\x61ppliedPolicyHit\x18\t \x01(\t\x1a[\n\x05\x44NSRR\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\r\x12\r\n\x05\x63lass\x18\x03 \x01(\r\x12\x0b\n\x03ttl\x18\x04 \x01(\r\x12\r\n\x05rdata\x18\x05 \x01(\x0c\x12\x0b\n\x03udr\x18\x06 \x01(\x08\"d\n\x04Type\x12\x10\n\x0c\x44NSQueryType\x10\x01\x12\x13\n\x0f\x44NSResponseType\x10\x02\x12\x18\n\x14\x44NSOutgoingQueryType\x10\x03\x12\x1b\n\x17\x44NSIncomingResponseType\x10\x04\"#\n\x0cSocketFamily\x12\x08\n\x04INET\x10\x01\x12\t\n\x05INET6\x10\x02\"\"\n\x0eSocketProtocol\x12\x07\n\x03UDP\x10\x01\x12\x07\n\x03TCP\x10\x02\"Y\n\nPolicyType\x12\x0b\n\x07UNKNOWN\x10\x01\x12\t\n\x05QNAME\x10\x02\x12\x0c\n\x08\x43LIENTIP\x10\x03\x12\x0e\n\nRESPONSEIP\x10\x04\x12\x0b\n\x07NSDNAME\x10\x05\x12\x08\n\x04NSIP\x10\x06'
+  serialized_pb=b'\n\x10\x64nsmessage.proto\"\xdc\t\n\x0cPBDNSMessage\x12 \n\x04type\x18\x01 \x02(\x0e\x32\x12.PBDNSMessage.Type\x12\x11\n\tmessageId\x18\x02 \x01(\x0c\x12\x16\n\x0eserverIdentity\x18\x03 \x01(\x0c\x12\x30\n\x0csocketFamily\x18\x04 \x01(\x0e\x32\x1a.PBDNSMessage.SocketFamily\x12\x34\n\x0esocketProtocol\x18\x05 \x01(\x0e\x32\x1c.PBDNSMessage.SocketProtocol\x12\x0c\n\x04\x66rom\x18\x06 \x01(\x0c\x12\n\n\x02to\x18\x07 \x01(\x0c\x12\x0f\n\x07inBytes\x18\x08 \x01(\x04\x12\x0f\n\x07timeSec\x18\t \x01(\r\x12\x10\n\x08timeUsec\x18\n \x01(\r\x12\n\n\x02id\x18\x0b \x01(\r\x12+\n\x08question\x18\x0c \x01(\x0b\x32\x19.PBDNSMessage.DNSQuestion\x12+\n\x08response\x18\r \x01(\x0b\x32\x19.PBDNSMessage.DNSResponse\x12\x1f\n\x17originalRequestorSubnet\x18\x0e \x01(\x0c\x12\x13\n\x0brequestorId\x18\x0f \x01(\t\x12\x18\n\x10initialRequestId\x18\x10 \x01(\x0c\x12\x10\n\x08\x64\x65viceId\x18\x11 \x01(\x0c\x12\x1b\n\x13newlyObservedDomain\x18\x12 \x01(\x08\x12\x12\n\ndeviceName\x18\x13 \x01(\t\x12\x10\n\x08\x66romPort\x18\x14 \x01(\r\x12\x0e\n\x06toPort\x18\x15 \x01(\r\x1a;\n\x0b\x44NSQuestion\x12\r\n\x05qName\x18\x01 \x01(\t\x12\r\n\x05qType\x18\x02 \x01(\r\x12\x0e\n\x06qClass\x18\x03 \x01(\r\x1a\xe6\x02\n\x0b\x44NSResponse\x12\r\n\x05rcode\x18\x01 \x01(\r\x12,\n\x03rrs\x18\x02 \x03(\x0b\x32\x1f.PBDNSMessage.DNSResponse.DNSRR\x12\x15\n\rappliedPolicy\x18\x03 \x01(\t\x12\x0c\n\x04tags\x18\x04 \x03(\t\x12\x14\n\x0cqueryTimeSec\x18\x05 \x01(\r\x12\x15\n\rqueryTimeUsec\x18\x06 \x01(\r\x12\x33\n\x11\x61ppliedPolicyType\x18\x07 \x01(\x0e\x32\x18.PBDNSMessage.PolicyType\x12\x1c\n\x14\x61ppliedPolicyTrigger\x18\x08 \x01(\t\x12\x18\n\x10\x61ppliedPolicyHit\x18\t \x01(\t\x1a[\n\x05\x44NSRR\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\r\x12\r\n\x05\x63lass\x18\x03 \x01(\r\x12\x0b\n\x03ttl\x18\x04 \x01(\r\x12\r\n\x05rdata\x18\x05 \x01(\x0c\x12\x0b\n\x03udr\x18\x06 \x01(\x08\"d\n\x04Type\x12\x10\n\x0c\x44NSQueryType\x10\x01\x12\x13\n\x0f\x44NSResponseType\x10\x02\x12\x18\n\x14\x44NSOutgoingQueryType\x10\x03\x12\x1b\n\x17\x44NSIncomingResponseType\x10\x04\"#\n\x0cSocketFamily\x12\x08\n\x04INET\x10\x01\x12\t\n\x05INET6\x10\x02\"\"\n\x0eSocketProtocol\x12\x07\n\x03UDP\x10\x01\x12\x07\n\x03TCP\x10\x02\"Y\n\nPolicyType\x12\x0b\n\x07UNKNOWN\x10\x01\x12\t\n\x05QNAME\x10\x02\x12\x0c\n\x08\x43LIENTIP\x10\x03\x12\x0e\n\nRESPONSEIP\x10\x04\x12\x0b\n\x07NSDNAME\x10\x05\x12\x08\n\x04NSIP\x10\x06\".\n\x10PBDNSMessageList\x12\x1a\n\x03msg\x18\x01 \x03(\x0b\x32\r.PBDNSMessage'
 )
 
 
@@ -528,6 +528,38 @@ _PBDNSMESSAGE = _descriptor.Descriptor(
   serialized_end=1265,
 )
 
+
+_PBDNSMESSAGELIST = _descriptor.Descriptor(
+  name='PBDNSMessageList',
+  full_name='PBDNSMessageList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='msg', full_name='PBDNSMessageList.msg', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1267,
+  serialized_end=1313,
+)
+
 _PBDNSMESSAGE_DNSQUESTION.containing_type = _PBDNSMESSAGE
 _PBDNSMESSAGE_DNSRESPONSE_DNSRR.containing_type = _PBDNSMESSAGE_DNSRESPONSE
 _PBDNSMESSAGE_DNSRESPONSE.fields_by_name['rrs'].message_type = _PBDNSMESSAGE_DNSRESPONSE_DNSRR
@@ -542,7 +574,9 @@ _PBDNSMESSAGE_TYPE.containing_type = _PBDNSMESSAGE
 _PBDNSMESSAGE_SOCKETFAMILY.containing_type = _PBDNSMESSAGE
 _PBDNSMESSAGE_SOCKETPROTOCOL.containing_type = _PBDNSMESSAGE
 _PBDNSMESSAGE_POLICYTYPE.containing_type = _PBDNSMESSAGE
+_PBDNSMESSAGELIST.fields_by_name['msg'].message_type = _PBDNSMESSAGE
 DESCRIPTOR.message_types_by_name['PBDNSMessage'] = _PBDNSMESSAGE
+DESCRIPTOR.message_types_by_name['PBDNSMessageList'] = _PBDNSMESSAGELIST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 PBDNSMessage = _reflection.GeneratedProtocolMessageType('PBDNSMessage', (_message.Message,), {
@@ -575,6 +609,13 @@ _sym_db.RegisterMessage(PBDNSMessage)
 _sym_db.RegisterMessage(PBDNSMessage.DNSQuestion)
 _sym_db.RegisterMessage(PBDNSMessage.DNSResponse)
 _sym_db.RegisterMessage(PBDNSMessage.DNSResponse.DNSRR)
+
+PBDNSMessageList = _reflection.GeneratedProtocolMessageType('PBDNSMessageList', (_message.Message,), {
+  'DESCRIPTOR' : _PBDNSMESSAGELIST,
+  '__module__' : 'dnsmessage_pb2'
+  # @@protoc_insertion_point(class_scope:PBDNSMessageList)
+  })
+_sym_db.RegisterMessage(PBDNSMessageList)
 
 
 # @@protoc_insertion_point(module_scope)
