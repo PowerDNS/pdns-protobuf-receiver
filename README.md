@@ -1,3 +1,8 @@
+# ⚠️ Important notice
+
+This project is no longer maintained.  
+👉 Please use [DNS-collector](https://github.com/dmachard/dnscollector)](https://github.com/dmachard/DNS-collector) instead, which provides a more complete and up-to-date solution.
+
 # PowerDNS protobuf receiver
 
 ![](https://github.com/dmachard/pdns-protobuf-receiver/workflows/Publish/badge.svg)
